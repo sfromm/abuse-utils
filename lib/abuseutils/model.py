@@ -33,6 +33,7 @@ class Incident(Base):
     src_ip      = Column(String) # FIXME
     timestamp   = Column(DateTime, default=datetime.datetime.now)
     reporter_id = Column(Integer, ForeignKey('reporter.id'))
+    incident_type_id     = Column(Integer, ForeignKey('incident_type.id'))
 
     def __init__(self, src_ip, timestamp):
         self.src_ip = src_ip
@@ -40,6 +41,21 @@ class Incident(Base):
 
     def __repr__(self):
         return "<Incident<'%s', '%s'>" % (self.src_ip, self.timestamp)
+
+class IncidentType(Base):
+    __tablename__ = 'incident_type'
+
+    id          = Column(Integer, primary_key=True)
+    name        = Column(String)
+    description = Column(String)
+
+    def __init__(self, name, description=None):
+        self.name = name
+        if description is not None:
+            self.description = description
+
+    def __repr__(self):
+        return "<IncidentType<'%s'>" % (self.name)
 
 class Reporter(Base):
     __tablename__ = 'reporter'
@@ -49,10 +65,11 @@ class Reporter(Base):
     email = Column(String)
     phone = Column(String)
 
-    def __init__(self, name, email, phone):
+    def __init__(self, name, email, phone=None):
         self.name = name
         self.email = email
-        self.phone = phone
+        if phone is not None:
+            self.phone = phone
 
     def __repr__(self):
         return "<Reporter<'%s'>" % (self.name)
