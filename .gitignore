@@ -7,3 +7,4 @@ alembic.ini
 MANIFEST
 dist
 rpm-build
+.coverage
