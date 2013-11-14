@@ -19,7 +19,21 @@
 import os
 import yaml
 import json
+import datetime
+import dateutil.parser
+import logging
 import abuseutils.constants as C
+
+def parse_datetime_string(arg):
+    ''' parse an arbitrary date string and return datetime object '''
+    try:
+        return dateutil.parser.parse(arg, default=True)
+    except ValueError:
+        if 'now' in arg:
+            return datetime.datetime.now()
+        else:
+            logging.error('failed to parse date string: %s', arg)
+            return None
 
 def parse_json(data):
     ''' convert json string to data structure '''
