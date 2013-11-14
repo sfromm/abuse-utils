@@ -8,3 +8,4 @@ MANIFEST
 dist
 rpm-build
 .coverage
+test.sqlite
