@@ -29,7 +29,7 @@ def get_config_value(p, section, key, env_var, default):
             return value
     if p is not None:
         try:
-            return p.get(key)
+            return p.get(section, key)
         except:
             return default
     return default
@@ -49,15 +49,18 @@ def load_config_file():
             break
     if not found:
         cfg = None
-    return None
+    return cfg
 
 cfg = load_config_file()
 SECTION = 'default'
 
-DEFAULT_LOG_FORMAT = get_config_value(cfg, SECTION,
-                                      'log_format', 'ABUSEUTILS_LOG_FORMAT',
-                                      '%(asctime)s: [%(levelname)s] %(message)s')
-DEFAULT_SMTP_SERVER = get_config_value(cfg, SECTION,
-                                       'smtp_server', 'ABUSEUTILS_SMTP_SERVER',
-                                       'localhost')
-                                    
+DEFAULT_DB_URI = get_config_value(cfg, SECTION, 'sqlalchemy.url', None, 'sqlite://')
+DEFAULT_LOG_FORMAT = get_config_value(
+        cfg, SECTION, 'log_format', 'ABUSEUTILS_LOG_FORMAT', '%(asctime)s: [%(levelname)s] %(message)s'
+        )
+DEFAULT_SMTP_SERVER = get_config_value(
+        cfg, SECTION, 'smtp_server', 'ABUSEUTILS_SMTP_SERVER', 'localhost'
+        )
+DEFAULT_SPOOL_DIR = get_config_value(
+        cfg, SECTION, 'spooldir', 'ABUSEUTILS_SPOOL_DIR', '/var/spool/abuseutils'
+        )
